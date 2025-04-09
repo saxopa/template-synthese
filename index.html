@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthèse d'Entretien</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Synthèse d'Entretien</h1>
+
+        <div class="section">
+            <h2>Informations Générales</h2>
+            
+            <label>Client / Entreprise :</label>
+            <input type="text" id="entreprise">
+            
+            <label>Intitulé du poste :</label>
+            <input type="text" id="posteVise">
+            
+            <label>Nom du candidat :</label>
+            <input type="text" id="nomCandidat">
+            
+            <label>Consultant RH :</label>
+            <input type="text" id="consultantRH">
+        </div>
+
+        <div class="section">
+            <h2>Détails de l'Entretien</h2>
+            
+            <label>Date de l'entretien :</label>
+            <input type="date" id="dateEntretien">
+            
+            <label>Heure de l'entretien :</label>
+            <input type="time" id="heureEntretien">
+            
+            <label>Lieu de l'entretien :</label>
+            <input type="text" id="lieuEntretien" placeholder="Ex: Visioconférence, Présentiel...">
+        </div>
+
+        <div class="section">
+            <h2>Supports d'Entretien</h2>
+            
+            <label>Documents fournis :</label>
+            <textarea id="supportsEntretien" placeholder="CV, Diplômes, Lettres de recommandation..."></textarea>
+        </div>
+
+        <div class="section">
+            <h2>Analyse de l'Entretien</h2>
+            
+            <label>Compréhension du poste :</label>
+            <textarea id="comprehensionPoste" placeholder="Évaluation de la compréhension du périmètre et des enjeux..."></textarea>
+            
+            <label>Motivation à rejoindre l'entreprise :</label>
+            <textarea id="motivation" placeholder="Raisons et motivations du candidat..."></textarea>
+            
+            <label>Points forts de la candidature :</label>
+            <textarea id="pointsFortsCandidature" placeholder="Expériences pertinentes, atouts spécifiques..."></textarea>
+            
+            <label>Savoir-être :</label>
+            <textarea id="savoirEtre" placeholder="Qualités personnelles, comportement..."></textarea>
+        </div>
+
+        <div class="section">
+            <h2>Évaluation des Compétences</h2>
+            
+            <label>Compétences techniques :</label>
+            <input type="number" min="1" max="5" id="techSkills" placeholder="1 à 5">
+            
+            <label>Soft skills :</label>
+            <input type="number" min="1" max="5" id="softSkills" placeholder="1 à 5">
+            
+            <label>Adaptabilité :</label>
+            <input type="number" min="1" max="5" id="adaptabilite" placeholder="1 à 5">
+            
+            <label>Culture d'entreprise :</label>
+            <input type="number" min="1" max="5" id="cultureEntreprise" placeholder="1 à 5">
+        </div>
+
+        <div class="section">
+            <h2>Rémunération</h2>
+            
+            <label>Rémunération actuelle :</label>
+            <input type="text" id="remunerationActuelle" placeholder="Ex: 30K€, Sans emploi...">
+            
+            <label>Rémunération souhaitée :</label>
+            <input type="text" id="remunerationSouhaitee" placeholder="Ex: 35K€ + avantages...">
+        </div>
+
+        <div class="section">
+            <h2>Points Forts et Axes d'Amélioration</h2>
+            
+            <label>Points forts :</label>
+            <textarea id="pointsForts" placeholder="Principales qualités et points positifs..."></textarea>
+            
+            <label>Axes d'amélioration :</label>
+            <textarea id="axesAmelioration" placeholder="Points à développer..."></textarea>
+        </div>
+
+        <div class="section">
+            <h2>Conclusion</h2>
+            
+            <label>Recommandation :</label>
+            <select id="recommandation">
+                <option value="AVIS FAVORABLE">Avis Favorable</option>
+                <option value="AVIS FAVORABLE AVEC RÉSERVES">Avis Favorable avec Réserves</option>
+                <option value="AVIS DÉFAVORABLE">Avis Défavorable</option>
+            </select>
+            
+            <label>Synthèse détaillée :</label>
+            <textarea id="synthese" placeholder="Conclusion détaillée de l'entretien..."></textarea>
+        </div>
+
+        <button onclick="genererPDF()">📄 Générer le Rapport PDF</button>
+    </div>
+
+<script>
+    function genererPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Couleurs et styles
+    const bleuMarine = [0, 32, 96];
+    const gris = [128, 128, 128];
+    
+    // Récupération des données
+    const data = {
+        nomCandidat: document.getElementById("nomCandidat").value,
+        posteVise: document.getElementById("posteVise").value,
+        dateEntretien: document.getElementById("dateEntretien").value,
+        consultantRH: document.getElementById("consultantRH").value,
+        entreprise: document.getElementById("entreprise").value,
+        techSkills: document.getElementById("techSkills").value,
+        softSkills: document.getElementById("softSkills").value,
+        adaptabilite: document.getElementById("adaptabilite").value,
+        cultureEntreprise: document.getElementById("cultureEntreprise").value,
+        pointsForts: document.getElementById("pointsForts").value,
+        axesAmelioration: document.getElementById("axesAmelioration").value,
+        recommandation: document.getElementById("recommandation").value,
+        // Nouveaux champs à ajouter dans le HTML
+        heureEntretien: document.getElementById("heureEntretien").value,
+        lieuEntretien: document.getElementById("lieuEntretien").value,
+        supportsEntretien: document.getElementById("supportsEntretien").value,
+        comprehensionPoste: document.getElementById("comprehensionPoste").value,
+        motivation: document.getElementById("motivation").value,
+        pointsFortsCandidature: document.getElementById("pointsFortsCandidature").value,
+        savoirEtre: document.getElementById("savoirEtre").value,
+        remunerationActuelle: document.getElementById("remunerationActuelle").value,
+        remunerationSouhaitee: document.getElementById("remunerationSouhaitee").value,
+        synthese: document.getElementById("synthese").value
+    };
+
+    // Fonctions utilitaires
+    function dessinerTitre(texte, y) {
+        doc.setFillColor(...bleuMarine);
+        doc.rect(0, y - 15, 210, 25, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(16);
+        doc.setFont("helvetica", "bold");
+        doc.text(texte, 105, y, { align: 'center' });
+        doc.setTextColor(0, 0, 0);
+    }
+
+    function dessinerSousTitre(texte, y) {
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(...bleuMarine);
+        doc.text(texte, 20, y);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont("helvetica", "normal");
+    }
+
+    function ajouterContenu(texte, y) {
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "normal");
+        doc.text(texte, 20, y);
+    }
+
+    // Page 1 - En-tête et Informations Générales
+    dessinerTitre("SYNTHÈSE D'ENTRETIEN", 12.5);
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text(data.entreprise.toUpperCase(), 105, 45, { align: 'center' });
+    
+    dessinerSousTitre("INFORMATIONS GÉNÉRALES", 65);
+    ajouterContenu(`Intitulé du poste : ${data.posteVise}`, 85);
+    ajouterContenu(`Candidat(e) : ${data.nomCandidat}`, 95);
+    ajouterContenu(`Date : ${data.dateEntretien}`, 105);
+    ajouterContenu(`Heure : ${data.heureEntretien}`, 115);
+    ajouterContenu(`Lieu : ${data.lieuEntretien}`, 125);
+    
+    dessinerSousTitre("SUPPORTS D'ENTRETIEN", 145);
+    const supportsSplits = doc.splitTextToSize(data.supportsEntretien, 170);
+    doc.text(supportsSplits, 20, 160);
+
+  // Page 2 - Analyse de l'entretien
+  doc.addPage();
+  dessinerTitre("ANALYSE DE L'ENTRETIEN", 12.5);
+  
+  dessinerSousTitre("Compréhension du poste", 50);
+  const comprehensionSplits = doc.splitTextToSize(data.comprehensionPoste, 170);
+  doc.text(comprehensionSplits, 20, 60);
+  
+  dessinerSousTitre("Motivation à rejoindre l'entreprise", 180);
+  const motivationSplits = doc.splitTextToSize(data.motivation, 170);
+  doc.text(motivationSplits, 20, 190);
+
+
+  // Page 3 - Analyse de l'entretien
+  doc.addPage();
+  
+  dessinerSousTitre("Points forts de la candidature", 20);
+  const pointsFortsSplits = doc.splitTextToSize(data.pointsFortsCandidature, 170);
+  doc.text(pointsFortsSplits, 20, 30);
+  
+  dessinerSousTitre("Savoir-être", 150);
+  const savoirEtreSplits = doc.splitTextToSize(data.savoirEtre, 170);
+  doc.text(savoirEtreSplits, 20, 160);
+
+
+
+    // Page 4 - Évaluation et Rémunération
+    doc.addPage();
+    dessinerTitre("ÉVALUATION DES COMPÉTENCES", 12.5);
+    
+    function dessinerJauge(valeur, y, label) {
+        const startX = 100;
+        doc.setDrawColor(...gris);
+        doc.setLineWidth(0.5);
+        doc.line(startX, y, startX + 50, y);
+        doc.setFillColor(...bleuMarine);
+        doc.circle(startX + (valeur * 10), y, 2, 'F');
+        doc.setFontSize(10);
+        doc.text(`${valeur}/5`, startX + 55, y + 1);
+        doc.text(label, startX - 5, y + 1, { align: 'right' });
+    }
+
+    dessinerJauge(data.techSkills, 50, "Compétences Techniques");
+    dessinerJauge(data.softSkills, 65, "Soft Skills");
+    dessinerJauge(data.adaptabilite, 80, "Adaptabilité");
+    dessinerJauge(data.cultureEntreprise, 95, "Culture d'entreprise");
+
+    dessinerSousTitre("RÉMUNÉRATION", 150);
+    ajouterContenu(`Rémunération actuelle : ${data.remunerationActuelle}`, 170);
+    ajouterContenu(`Rémunération souhaitée : ${data.remunerationSouhaitee}`, 180);
+
+    // Page 5 - Synthèse finale
+    doc.addPage();
+    dessinerTitre("SYNTHÈSE FINALE", 25);
+    
+    doc.setFillColor(245, 245, 245);
+    doc.roundedRect(20, 50, 170, 20, 3, 3, 'F');
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text(`Recommandation : ${data.recommandation}`, 30, 63);
+
+    dessinerSousTitre("Synthèse détaillée", 85);
+    const syntheseSplits = doc.splitTextToSize(data.synthese, 170);
+    doc.text(syntheseSplits, 20, 100);
+
+    // Footer sur chaque page
+    const pageCount = doc.getNumberOfPages();
+    for(let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(10);
+        doc.setTextColor(...gris);
+        const today = new Date().toLocaleDateString();
+        doc.text(`Synthèse d'entretien de l'Agence Ultramarine de Recrutement pour - ${data.entreprise} ${today}`, 20, 285);
+        doc.text(`Page ${i}/${pageCount}`, 180, 285);
+    }
+
+    doc.save(`Synthese_${data.nomCandidat.replace(/\s+/g, '_')}.pdf`);
+}
+</script>
+</body>
+</html>
